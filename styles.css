@@ -45,19 +45,21 @@ h1 {
     margin-top: 20px;
 }
 
-#actionButtons {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-}
-
+/* Direction Buttons Layout */
 #directionButtons {
-    display: grid;
-    grid-template-columns: repeat(3, 80px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 10px;
 }
 
-/* Buttons */
+.horizontal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* Button Styling */
 .button {
     display: flex;
     justify-content: center;
@@ -68,19 +70,10 @@ h1 {
     border-radius: 5px;
     cursor: pointer;
     font-size: 20px;
+    width: 80px;
+    height: 50px;
 }
 
 .button:hover {
     background-color: #777;
-}
-
-.action-button {
-    width: 120px;
-    height: 50px;
-    margin: 0 10px;
-}
-
-.empty {
-    background-color: transparent;
-    cursor: default;
 }

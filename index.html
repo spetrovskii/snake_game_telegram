@@ -13,21 +13,13 @@
         <canvas id="gameCanvas" width="400" height="400"></canvas>
     </div>
     <div id="controls">
-        <div id="actionButtons">
-            <button class="button action-button" id="startButton">Start</button>
-            <button class="button action-button" id="pauseButton">Pause</button>
-            <button class="button action-button" id="restartButton">Restart</button>
-        </div>
         <div id="directionButtons">
-            <button class="button empty"></button>
-            <button class="button" id="upButton">↑</button>
-            <button class="button empty"></button>
-            <button class="button" id="leftButton">←</button>
-            <button class="button empty"></button>
-            <button class="button" id="rightButton">→</button>
-            <button class="button empty"></button>
-            <button class="button" id="downButton">↓</button>
-            <button class="button empty"></button>
+            <button class="button direction-button" id="upButton">↑</button>
+            <div class="horizontal-buttons">
+                <button class="button direction-button" id="leftButton">←</button>
+                <button class="button direction-button" id="rightButton">→</button>
+            </div>
+            <button class="button direction-button" id="downButton">↓</button>
         </div>
     </div>
     <script src="snake.js"></script>

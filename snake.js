@@ -2,14 +2,11 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-// Get buttons
+// Get direction buttons
 const upButton = document.getElementById("upButton");
 const downButton = document.getElementById("downButton");
 const leftButton = document.getElementById("leftButton");
 const rightButton = document.getElementById("rightButton");
-const startButton = document.getElementById("startButton");
-const pauseButton = document.getElementById("pauseButton");
-const restartButton = document.getElementById("restartButton");
 
 // Game constants
 const boxSize = 20; // Size of one grid box
@@ -89,11 +86,11 @@ function checkCollision() {
     return false;
 }
 
-// Handle game over
-function gameOver() {
+// Handle game over and automatically restart
+function handleGameOver() {
     alert(`Game Over! Your score: ${score}`);
-    clearInterval(gameInterval);
-    isGameRunning = false;
+    resetGame();
+    startGame(); // Automatically restart the game
 }
 
 // Reset the game
@@ -111,7 +108,7 @@ function resetGame() {
 // Game loop
 function gameLoop() {
     if (checkCollision()) {
-        gameOver();
+        handleGameOver(); // Restart the game if collision occurs
         return;
     }
 
@@ -121,7 +118,14 @@ function gameLoop() {
     drawFood();
 }
 
-// Button controls
+// Start the game
+function startGame() {
+    if (isGameRunning) return;
+    isGameRunning = true;
+    gameInterval = setInterval(gameLoop, 100);
+}
+
+// Direction controls
 upButton.addEventListener("click", () => {
     if (direction !== "DOWN") direction = "UP";
 });
@@ -135,24 +139,8 @@ rightButton.addEventListener("click", () => {
     if (direction !== "LEFT") direction = "RIGHT";
 });
 
-// Start the game
-startButton.addEventListener("click", () => {
-    if (isGameRunning) return;
-    isGameRunning = true;
-    gameInterval = setInterval(gameLoop, 100);
-});
-
-// Pause the game
-pauseButton.addEventListener("click", () => {
-    if (isGameRunning) {
-        clearInterval(gameInterval);
-        isGameRunning = false;
-        scoreDisplay.innerText = "Game Paused";
-    }
-});
-
-// Restart the game
-restartButton.addEventListener("click", () => {
+// Automatically load and start the game when the page opens
+window.onload = function () {
     resetGame();
-    startButton.click();
-});
+    startGame();
+};
