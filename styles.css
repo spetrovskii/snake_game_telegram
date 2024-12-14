@@ -1,0 +1,86 @@
+/* General Styles */
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #000;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+/* Game Container */
+#gameContainer {
+    position: relative;
+    display: inline-block;
+}
+
+#scoreDisplay {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+#gameCanvas {
+    display: block;
+    border: 1px solid white;
+    background-color: black;
+}
+
+/* Controls */
+#controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+#actionButtons {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+#directionButtons {
+    display: grid;
+    grid-template-columns: repeat(3, 80px);
+    gap: 10px;
+}
+
+/* Buttons */
+.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #555;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.button:hover {
+    background-color: #777;
+}
+
+.action-button {
+    width: 120px;
+    height: 50px;
+    margin: 0 10px;
+}
+
+.empty {
+    background-color: transparent;
+    cursor: default;
+}

@@ -1,95 +1,158 @@
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
+// Get canvas and context
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
 
-let snake = [{ x: 200, y: 200 }];
-let direction = { x: 10, y: 0 }; // Initial direction
-let food = { x: 100, y: 100 };
+// Get buttons
+const upButton = document.getElementById("upButton");
+const downButton = document.getElementById("downButton");
+const leftButton = document.getElementById("leftButton");
+const rightButton = document.getElementById("rightButton");
+const startButton = document.getElementById("startButton");
+const pauseButton = document.getElementById("pauseButton");
+const restartButton = document.getElementById("restartButton");
+
+// Game constants
+const boxSize = 20; // Size of one grid box
+const rows = canvas.height / boxSize;
+const cols = canvas.width / boxSize;
+
+// Game variables
+let snake = [{ x: 5 * boxSize, y: 5 * boxSize }];
+let food = { x: 8 * boxSize, y: 8 * boxSize };
+let direction = "RIGHT";
 let score = 0;
+let isGameRunning = false;
+let gameInterval;
 
-// Draw Snake
+// DOM reference for score display
+const scoreDisplay = document.getElementById("scoreDisplay");
+
+// Update score display
+function updateScore(points) {
+    score += points;
+    scoreDisplay.innerText = `Score: ${score}`;
+}
+
+// Draw snake
 function drawSnake() {
-    snake.forEach(part => {
-        ctx.fillStyle = 'lime';
-        ctx.fillRect(part.x, part.y, 10, 10);
+    ctx.fillStyle = "lime";
+    snake.forEach(segment => {
+        ctx.fillRect(segment.x, segment.y, boxSize, boxSize);
     });
 }
 
-// Move Snake
-function moveSnake() {
-    const head = { x: snake[0].x + direction.x, y: snake[0].y + direction.y };
+// Draw food
+function drawFood() {
+    ctx.fillStyle = "red";
+    ctx.fillRect(food.x, food.y, boxSize, boxSize);
+}
 
-    // Teleport the snake to the opposite side when crossing borders
-    if (head.x < 0) head.x = canvas.width - 10; // Left to right
-    if (head.x >= canvas.width) head.x = 0;     // Right to left
-    if (head.y < 0) head.y = canvas.height - 10; // Top to bottom
-    if (head.y >= canvas.height) head.y = 0;    // Bottom to top
+// Move snake
+function moveSnake() {
+    const head = { ...snake[0] };
+
+    if (direction === "UP") head.y -= boxSize;
+    if (direction === "DOWN") head.y += boxSize;
+    if (direction === "LEFT") head.x -= boxSize;
+    if (direction === "RIGHT") head.x += boxSize;
 
     snake.unshift(head);
 
-    // Check if snake eats the food
     if (head.x === food.x && head.y === food.y) {
-        score++;
-        generateFood();
+        updateScore(10);
+        generateNewFood();
     } else {
         snake.pop();
     }
 }
 
-// Generate Food
-function generateFood() {
-    food.x = Math.floor(Math.random() * (canvas.width / 10)) * 10;
-    food.y = Math.floor(Math.random() * (canvas.height / 10)) * 10;
+// Generate new food
+function generateNewFood() {
+    food.x = Math.floor(Math.random() * cols) * boxSize;
+    food.y = Math.floor(Math.random() * rows) * boxSize;
 }
 
-// Draw Food
-function drawFood() {
-    ctx.fillStyle = 'red';
-    ctx.fillRect(food.x, food.y, 10, 10);
-}
-
-// Check Collision
+// Check for collision
 function checkCollision() {
-    const [head, ...body] = snake;
+    const head = snake[0];
 
-    // Self Collision
-    body.forEach(part => {
-        if (part.x === head.x && part.y === head.y) resetGame();
-    });
+    if (head.x < 0 || head.y < 0 || head.x >= canvas.width || head.y >= canvas.height) {
+        return true;
+    }
+
+    for (let i = 1; i < snake.length; i++) {
+        if (head.x === snake[i].x && head.y === snake[i].y) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
-// Reset Game
+// Handle game over
+function gameOver() {
+    alert(`Game Over! Your score: ${score}`);
+    clearInterval(gameInterval);
+    isGameRunning = false;
+}
+
+// Reset the game
 function resetGame() {
-    snake = [{ x: 200, y: 200 }];
-    direction = { x: 10, y: 0 }; // Reset direction to right
+    snake = [{ x: 5 * boxSize, y: 5 * boxSize }];
+    food = { x: 8 * boxSize, y: 8 * boxSize };
+    direction = "RIGHT";
     score = 0;
-    generateFood();
+    updateScore(0);
+    clearInterval(gameInterval);
+    isGameRunning = false;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-// Game Loop
+// Game loop
 function gameLoop() {
+    if (checkCollision()) {
+        gameOver();
+        return;
+    }
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    moveSnake();
     drawSnake();
     drawFood();
-    moveSnake();
-    checkCollision();
 }
 
-// Add Event Listeners for Button Controls
-document.getElementById('up').addEventListener('click', () => {
-    if (direction.y === 0) direction = { x: 0, y: -10 }; // Move up
+// Button controls
+upButton.addEventListener("click", () => {
+    if (direction !== "DOWN") direction = "UP";
+});
+downButton.addEventListener("click", () => {
+    if (direction !== "UP") direction = "DOWN";
+});
+leftButton.addEventListener("click", () => {
+    if (direction !== "RIGHT") direction = "LEFT";
+});
+rightButton.addEventListener("click", () => {
+    if (direction !== "LEFT") direction = "RIGHT";
 });
 
-document.getElementById('down').addEventListener('click', () => {
-    if (direction.y === 0) direction = { x: 0, y: 10 }; // Move down
+// Start the game
+startButton.addEventListener("click", () => {
+    if (isGameRunning) return;
+    isGameRunning = true;
+    gameInterval = setInterval(gameLoop, 100);
 });
 
-document.getElementById('left').addEventListener('click', () => {
-    if (direction.x === 0) direction = { x: -10, y: 0 }; // Move left
+// Pause the game
+pauseButton.addEventListener("click", () => {
+    if (isGameRunning) {
+        clearInterval(gameInterval);
+        isGameRunning = false;
+        scoreDisplay.innerText = "Game Paused";
+    }
 });
 
-document.getElementById('right').addEventListener('click', () => {
-    if (direction.x === 0) direction = { x: 10, y: 0 }; // Move right
+// Restart the game
+restartButton.addEventListener("click", () => {
+    resetGame();
+    startButton.click();
 });
-
-// Start Game Loop
-setInterval(gameLoop, 100);

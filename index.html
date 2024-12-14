@@ -3,37 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snake Game</title>
-    <style>
-        canvas {
-            display: block;
-            margin: 20px auto;
-            background: black;
-        }
-        button {
-            font-size: 18px;
-            border: 1px solid #333;
-            border-radius: 5px;
-            background-color: #555;
-            color: white;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #777;
-        }
-    </style>
+    <title>Snake97 Game</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <canvas id="gameCanvas" width="400" height="400"></canvas>
-    <!-- Virtual Controls -->
-    <div style="text-align: center; margin-top: 10px;">
-        <div>
-            <button id="up" style="width: 60px; height: 60px; margin: 5px;">⬆️</button>
+    <h1>Snake97 Game</h1>
+    <div id="gameContainer">
+        <div id="scoreDisplay">Score: 0</div>
+        <canvas id="gameCanvas" width="400" height="400"></canvas>
+    </div>
+    <div id="controls">
+        <div id="actionButtons">
+            <button class="button action-button" id="startButton">Start</button>
+            <button class="button action-button" id="pauseButton">Pause</button>
+            <button class="button action-button" id="restartButton">Restart</button>
         </div>
-        <div>
-            <button id="left" style="width: 60px; height: 60px; margin: 5px;">⬅️</button>
-            <button id="down" style="width: 60px; height: 60px; margin: 5px;">⬇️</button>
-            <button id="right" style="width: 60px; height: 60px; margin: 5px;">➡️</button>
+        <div id="directionButtons">
+            <button class="button empty"></button>
+            <button class="button" id="upButton">↑</button>
+            <button class="button empty"></button>
+            <button class="button" id="leftButton">←</button>
+            <button class="button empty"></button>
+            <button class="button" id="rightButton">→</button>
+            <button class="button empty"></button>
+            <button class="button" id="downButton">↓</button>
+            <button class="button empty"></button>
         </div>
     </div>
     <script src="snake.js"></script>
