@@ -52,18 +52,12 @@
             margin-top: 20px;
         }
 
-        /* Direction Buttons Layout */
         #directionButtons {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            display: grid;
+            grid-template-columns: repeat(3, 80px); /* Each column is 80px */
+            grid-template-rows: repeat(2, 80px); /* Two rows */
             gap: 10px;
-        }
-
-        .horizontal-buttons {
-            display: flex;
             justify-content: center;
-            gap: 10px;
         }
 
         /* Button Styling */
@@ -78,11 +72,16 @@
             cursor: pointer;
             font-size: 20px;
             width: 80px;
-            height: 50px;
+            height: 80px;
         }
 
         .button:hover {
             background-color: #777;
+        }
+
+        .empty {
+            background-color: transparent;
+            cursor: default;
         }
     </style>
 </head>
@@ -94,12 +93,12 @@
     </div>
     <div id="controls">
         <div id="directionButtons">
-            <button class="button direction-button" id="upButton">↑</button>
-            <div class="horizontal-buttons">
-                <button class="button direction-button" id="leftButton">←</button>
-                <button class="button direction-button" id="rightButton">→</button>
-            </div>
-            <button class="button direction-button" id="downButton">↓</button>
+            <button class="button empty"></button>
+            <button class="button" id="upButton">↑</button>
+            <button class="button empty"></button>
+            <button class="button" id="leftButton">←</button>
+            <button class="button" id="downButton">↓</button>
+            <button class="button" id="rightButton">→</button>
         </div>
     </div>
     <script>
@@ -201,7 +200,7 @@
         // Reset the game
         function resetGame() {
             snake = [{ x: 5 * boxSize, y: 5 * boxSize }];
-            food = { x: 8 * boxSize, y: 8 * boxSize };
+            food = { x: 8 * boxSize, y: 8 * boxSize }];
             direction = "RIGHT";
             score = 0;
             updateScore(0);
