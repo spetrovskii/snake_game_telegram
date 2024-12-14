@@ -21,6 +21,12 @@ let score = 0;
 let isGameRunning = false;
 let gameInterval;
 
+// Notify Telegram that the game is ready
+let tg = window.TelegramGameProxy || null;
+if (tg) {
+    tg.ready();
+}
+
 // DOM reference for score display
 const scoreDisplay = document.getElementById("scoreDisplay");
 
@@ -89,8 +95,16 @@ function checkCollision() {
 // Handle game over and automatically restart
 function handleGameOver() {
     alert(`Game Over! Your score: ${score}`);
+
+    // Submit the score to Telegram
+    if (tg) {
+        tg.postEvent('score', score); // Send the score to Telegram
+        tg.close(); // Close the game once the score is submitted
+    } else {
+        console.error('Telegram Game Proxy is not available!');
+    }
+
     resetGame();
-    startGame(); // Automatically restart the game
 }
 
 // Reset the game
